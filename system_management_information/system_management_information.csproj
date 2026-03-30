@@ -1,0 +1,156 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Media\1.jpg" />
+    <None Remove="Media\10.jpg" />
+    <None Remove="Media\10h1.jpg" />
+    <None Remove="Media\10h2.jpg" />
+    <None Remove="Media\10h3.jpg" />
+    <None Remove="Media\10h4.jpg" />
+    <None Remove="Media\11.jpg" />
+    <None Remove="Media\11h1.jpg" />
+    <None Remove="Media\11h2.jpg" />
+    <None Remove="Media\11h3.jpg" />
+    <None Remove="Media\12.jpg" />
+    <None Remove="Media\12h1.jpg" />
+    <None Remove="Media\12h2.jpg" />
+    <None Remove="Media\12h4.jpg" />
+    <None Remove="Media\12h5.jpg" />
+    <None Remove="Media\13.jpg" />
+    <None Remove="Media\14.jpg" />
+    <None Remove="Media\1h1.jpg" />
+    <None Remove="Media\1h2.jpg" />
+    <None Remove="Media\1h3.jpg" />
+    <None Remove="Media\1h4.jpg" />
+    <None Remove="Media\1h5.jpg" />
+    <None Remove="Media\2.jpg" />
+    <None Remove="Media\2h1.jpg" />
+    <None Remove="Media\2h2.jpg" />
+    <None Remove="Media\2h3.jpg" />
+    <None Remove="Media\2h4.jpg" />
+    <None Remove="Media\2h5.jpg" />
+    <None Remove="Media\3.jpg" />
+    <None Remove="Media\3h1.jpg" />
+    <None Remove="Media\3h2.jpg" />
+    <None Remove="Media\3h3.jpg" />
+    <None Remove="Media\4.jpg" />
+    <None Remove="Media\4h1.jpeg" />
+    <None Remove="Media\4h2.jpeg" />
+    <None Remove="Media\4h3.jpeg" />
+    <None Remove="Media\4h4.jpeg" />
+    <None Remove="Media\5.jpg" />
+    <None Remove="Media\5h1.jpg" />
+    <None Remove="Media\5h2.jpg" />
+    <None Remove="Media\5h3.jpg" />
+    <None Remove="Media\6.jpg" />
+    <None Remove="Media\6h1.jpg" />
+    <None Remove="Media\7.jpg" />
+    <None Remove="Media\7h1.jpg" />
+    <None Remove="Media\7h2.jpg" />
+    <None Remove="Media\7h3.jpg" />
+    <None Remove="Media\7h4.jpg" />
+    <None Remove="Media\7h5.jpg" />
+    <None Remove="Media\8.jpg" />
+    <None Remove="Media\8h1.jpg" />
+    <None Remove="Media\8h2.jpg" />
+    <None Remove="Media\8h3.jpg" />
+    <None Remove="Media\8h4.jpg" />
+    <None Remove="Media\8h5.jpg" />
+    <None Remove="Media\9.jpg" />
+    <None Remove="Media\91.jpg" />
+    <None Remove="Media\9h1.jpg" />
+    <None Remove="Media\9h2.jpg" />
+    <None Remove="Media\9h3.jpg" />
+    <None Remove="Media\icon.ico" />
+    <None Remove="Media\logo_vizit.png" />
+    <None Remove="Media\pictureSight.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.25">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.25">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Media\1.jpg" />
+    <Resource Include="Media\10.jpg" />
+    <Resource Include="Media\10h1.jpg" />
+    <Resource Include="Media\10h2.jpg" />
+    <Resource Include="Media\10h3.jpg" />
+    <Resource Include="Media\10h4.jpg" />
+    <Resource Include="Media\11.jpg" />
+    <Resource Include="Media\11h1.jpg" />
+    <Resource Include="Media\11h2.jpg" />
+    <Resource Include="Media\11h3.jpg" />
+    <Resource Include="Media\12.jpg" />
+    <Resource Include="Media\12h1.jpg" />
+    <Resource Include="Media\12h2.jpg" />
+    <Resource Include="Media\12h4.jpg" />
+    <Resource Include="Media\12h5.jpg" />
+    <Resource Include="Media\13.jpg" />
+    <Resource Include="Media\14.jpg" />
+    <Resource Include="Media\1h1.jpg" />
+    <Resource Include="Media\1h2.jpg" />
+    <Resource Include="Media\1h3.jpg" />
+    <Resource Include="Media\1h4.jpg" />
+    <Resource Include="Media\1h5.jpg" />
+    <Resource Include="Media\2.jpg" />
+    <Resource Include="Media\2h1.jpg" />
+    <Resource Include="Media\2h2.jpg" />
+    <Resource Include="Media\2h3.jpg" />
+    <Resource Include="Media\2h4.jpg" />
+    <Resource Include="Media\2h5.jpg" />
+    <Resource Include="Media\3.jpg" />
+    <Resource Include="Media\3h1.jpg" />
+    <Resource Include="Media\3h2.jpg" />
+    <Resource Include="Media\3h3.jpg" />
+    <Resource Include="Media\4.jpg" />
+    <Resource Include="Media\4h1.jpeg" />
+    <Resource Include="Media\4h2.jpeg" />
+    <Resource Include="Media\4h3.jpeg" />
+    <Resource Include="Media\4h4.jpeg" />
+    <Resource Include="Media\5.jpg" />
+    <Resource Include="Media\5h1.jpg" />
+    <Resource Include="Media\5h2.jpg" />
+    <Resource Include="Media\5h3.jpg" />
+    <Resource Include="Media\6.jpg" />
+    <Resource Include="Media\6h1.jpg" />
+    <Resource Include="Media\7.jpg" />
+    <Resource Include="Media\7h1.jpg" />
+    <Resource Include="Media\7h2.jpg" />
+    <Resource Include="Media\7h3.jpg" />
+    <Resource Include="Media\7h4.jpg" />
+    <Resource Include="Media\7h5.jpg" />
+    <Resource Include="Media\8.jpg" />
+    <Resource Include="Media\8h1.jpg" />
+    <Resource Include="Media\8h2.jpg" />
+    <Resource Include="Media\8h3.jpg" />
+    <Resource Include="Media\8h4.jpg" />
+    <Resource Include="Media\8h5.jpg" />
+    <Resource Include="Media\9.jpg" />
+    <Resource Include="Media\91.jpg" />
+    <Resource Include="Media\9h1.jpg" />
+    <Resource Include="Media\9h2.jpg" />
+    <Resource Include="Media\9h3.jpg" />
+    <Resource Include="Media\icon.ico" />
+    <Resource Include="Media\logo_vizit.png" />
+    <Resource Include="Media\pictureSight.jpg" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,81 @@
+﻿<Page x:Class="system_management_information.Pages.EventsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:system_management_information.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="EventsPage">
+
+    <Grid>
+        <Border Style="{StaticResource BackBorder}">
+            <Button Style="{StaticResource BackButton}" Click="GoBack" Content="Назад"/>
+        </Border>
+        <TextBlock Style="{StaticResource LabelPage}" Text="Мероприятия"/>
+        <TextBlock Style="{StaticResource TextFound}" Text="Поиск: "/>
+        <Border CornerRadius="10" Background="#95a5a6" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="100,60,30,0" BorderThickness="1">
+            <TextBox x:Name="foundEventText" MaxLength="30" Foreground="White" Background="#95a5a6" BorderBrush="#95a5a6" Margin="5" BorderThickness="0" FontSize="16" FontFamily="Times New Roman" TextChanged="FoundEvent"/>
+        </Border>
+        <Border CornerRadius="20" Margin="20,100,20,70" Background="#95a5a6">
+            <ListBox x:Name="ListEvents" ItemsSource="{Binding listEvents}" Margin="15" Background="#95a5a6" MinHeight="0" BorderBrush="#95a5a6" Padding="0" VerticalAlignment="Top" SelectionChanged="ToEditEvent">
+            <ListBox.Resources>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="Width" Value="Auto"/>
+                </Style>
+                
+            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                        <Border Margin="5" Background="{Binding colorItem}" BorderBrush="White" BorderThickness="3" HorizontalAlignment="Stretch" CornerRadius="10">
+                        <Grid Margin="20" Background="{Binding colorItem}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0.5*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource NameDescription}" Text="Тип мероприятия:  " Foreground="{Binding foreground}"/>
+                                        <TextBlock Text="{Binding typeEvent}" FontSize="16" FontFamily="Times New Roman" Foreground="{Binding foreground}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource NameDescription}" Text="Название мероприятия:  " Foreground="{Binding foreground}"/>
+                                        <TextBlock Text="{Binding nameEvent}" FontSize="16" FontFamily="Times New Roman" Foreground="{Binding foreground}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource NameDescription}" Text="Адрес:  " Foreground="{Binding foreground}"/>
+                                        <TextBlock Text="{Binding addressEvent}" FontSize="16" FontFamily="Times New Roman" Foreground="{Binding foreground}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource NameDescription}" Text="Дата проведения:  " Foreground="{Binding foreground}"/>
+                                        <TextBlock Text="{Binding dateEvent}" FontSize="16" FontFamily="Times New Roman" Foreground="{Binding foreground}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource NameDescription}" Text="Время начала:  " Foreground="{Binding foreground}"/>
+                                        <TextBlock Text="{Binding timeBeginningEvent}" FontSize="16" FontFamily="Times New Roman" Foreground="{Binding foreground}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource NameDescription}" Text="Возрастное ограничение:  " Foreground="{Binding foreground}"/>
+                                        <TextBlock Text="{Binding ageLimit}" FontSize="16" FontFamily="Times New Roman" Foreground="{Binding foreground}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Visibility="{Binding visibilityTickets}">
+                                    <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" FontWeight="Bold" FontSize="20" FontFamily="Times New Roman" Text="Билеты:" Foreground="{Binding foreground}"/>
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" FontSize="16" FontFamily="Times New Roman" Text="{Binding tickets}" TextWrapping="Wrap" Foreground="{Binding foreground}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        </Border>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20,10">
+            <Border Style="{StaticResource BackBorder}" Width="150" Height="35">
+                <Button Content="Добавить" Style="{StaticResource BackButton}" Click="ToAddEvent"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Page>

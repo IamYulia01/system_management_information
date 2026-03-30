@@ -1,0 +1,82 @@
+﻿<Window x:Class="system_management_information.Windows.AddEditOperatingMode"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:system_management_information.Windows"
+        mc:Ignorable="d"
+        Icon="/Media/icon.ico"
+        Title="Приложение администратора базы данных" Height="450" Width="800">
+    <Grid>
+        <Border Style="{StaticResource BackBorder}">
+            <Button Style="{StaticResource BackButton}" Click="GoBack" Content="Назад"/>
+        </Border>
+        <TextBlock x:Name="titlePage"  Style="{StaticResource LabelPage}" Text="График работы"/>
+        <StackPanel Margin="100,10" VerticalAlignment="Center">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"  Style="{StaticResource NameDescription}" VerticalAlignment="Center" Text="Начало рабочего дня:  "/>
+                <Border Grid.Column="1" CornerRadius="10" Background="#95a5a6" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderThickness="1">
+                    <xctk:MaskedTextBox x:Name="startTime" Value="00:00" Margin="20,7" Mask="00:00" Foreground="White" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" FontSize="16" FontFamily="Times New Roman"/>
+                </Border>
+                <TextBlock Grid.Column="2"  Style="{StaticResource NameDescription}" VerticalAlignment="Center" Text="    Конец рабочего дня:  "/>
+                <Border Grid.Column="3" CornerRadius="10" Background="#95a5a6" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderThickness="1">
+                    <xctk:MaskedTextBox x:Name="endTime" Value="00:00" Margin="20,7" Mask="00:00" Foreground="White" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" FontSize="16" FontFamily="Times New Roman"/>
+                </Border>
+            </Grid>
+            <Grid x:Name="daysWeekGrid" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"  Style="{StaticResource NameDescription}" VerticalAlignment="Center" Text="День недели:  "/>
+                <Border Grid.Column="1" CornerRadius="10" Background="#95a5a6" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderThickness="1">
+                    <ComboBox x:Name="dayWeek" Foreground="Black" Background="#95a5a6" BorderBrush="#95a5a6" Margin="5" BorderThickness="0" FontSize="16" FontFamily="Times New Roman"/>
+                </Border>
+            </Grid>
+            
+            <Grid x:Name="specialDayText" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"  Style="{StaticResource NameDescription}" VerticalAlignment="Center" Text="Специальный день:  "/>
+                <Border Grid.Column="1" CornerRadius="10" Background="#95a5a6" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderThickness="1">
+                    <DatePicker x:Name="dateSpecialDay" Foreground="White" Background="#95a5a6" BorderBrush="#95a5a6"  Margin="5" BorderThickness="0" FontSize="16" FontFamily="Times New Roman">
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="Background" Value="#95a5a6"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Text" Value=" "/>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                </Border>
+            </Grid>
+            <Grid x:Name="statusDay" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"  Style="{StaticResource NameDescription}" VerticalAlignment="Center" Text="Статус специального дня:  "/>
+                <Border Grid.Column="1" CornerRadius="10" Background="#95a5a6" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderThickness="1">
+                    <TextBox x:Name="status" MaxLength="10" Foreground="White" Background="#95a5a6" BorderBrush="#95a5a6" Margin="5" BorderThickness="0" FontSize="16" FontFamily="Times New Roman"/>
+                </Border>
+            </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+                <Border Style="{StaticResource BackBorder}" Width="150" Height="35" Margin="40,10">
+                    <Button Content="Сохранить" Style="{StaticResource BackButton}" Click="SaveTicket"/>
+                </Border>
+                <Border x:Name="btnDelete" Style="{StaticResource BackBorder}" Width="150" Height="35" Margin="40,10">
+                    <Button Content="Удалить" Style="{StaticResource BackButton}" Click="DeleteOperatingMode"/>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
