@@ -2,10 +2,19 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="Pages\AddEditCateringPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\AddEditEventPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\AddEditHotelPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\AddEditSightPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\AddEditSouvenirPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\CateringPage.xaml.cs">
@@ -29,7 +38,13 @@
     <Compile Update="Windows\AddEditOperatingMode.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Windows\AddEditOperatingModeCatering.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Windows\AddEditTicket.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Windows\AddPhoto.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

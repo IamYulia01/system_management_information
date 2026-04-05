@@ -66,8 +66,15 @@ namespace system_management_information.Pages
             ShowCaterings();
         }
 
+        public void RefreshCatering()
+        {
+            context.ChangeTracker.Clear();
+            ListCaterings.ItemsSource = null;
+            LoadCaterings();
+        }
         public void ShowCaterings()
         {
+            listCaterings.Clear();
             foreach(var catering in caterings)
             {
                 var cateringShow = new CateringShow();
@@ -98,7 +105,7 @@ namespace system_management_information.Pages
                      
                     if ((modeOperations.Last().DayWeek == null || modeOperations.Last().DayWeek > 7 || modeOperations.Last().DayWeek <= 0) && modeOperations.Last().IdSpecialDayCatering == null)
                         cateringShow.operationModeCatering += $" {modeOperations.Last().IdModeOperationCateringNavigation.Beginning.ToShortTimeString()} " +
-                            $"- {modeOperations.Last().IdModeOperationCateringNavigation.EndDay.ToShortTimeString()}";
+                            $"- {modeOperations.Last().IdModeOperationCateringNavigation.EndDay.ToShortTimeString()}\n";
                     else
                     {
                         //группировка дней недели с одинаковым графиком работы
@@ -179,6 +186,8 @@ namespace system_management_information.Pages
                 listCaterings.Add(cateringShow);
 
             }
+            ListCaterings.ItemsSource = null;
+            ListCaterings.ItemsSource = listCaterings.OrderBy(s => s.idCatering);
         }
 
         private void FoundCatering(object sender, TextChangedEventArgs e)
@@ -196,12 +205,17 @@ namespace system_management_information.Pages
 
         private void ToAddEvent(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new AddEditCateringPage(null, RefreshCatering));
         }
 
         private void ToEditCatering(object sender, SelectionChangedEventArgs e)
         {
-
+            if (ListCaterings.SelectedItem != null)
+            {
+                CateringShow cateringShow = ListCaterings.SelectedItem as CateringShow;
+                ListCaterings.SelectedItem = null;
+                NavigationService.Navigate(new AddEditCateringPage(cateringShow.idCatering, RefreshCatering));
+            }
         }
         private void ToSiteCatering(object sender, RequestNavigateEventArgs e)
         {

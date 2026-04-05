@@ -26,6 +26,7 @@ namespace system_management_information.Windows
         public VisitCenterContext context { get; set; }
         public SightOperatingMode operatingMode { get; set; }
         public bool isAdd { get; set; }
+
         public bool specialDay { get; set; }
         public AddEditSightPage pagePerent { get; set; }
         public AddEditOperatingMode(int? idOperatingMode, bool isSpecialDay, AddEditSightPage page)
@@ -145,8 +146,13 @@ namespace system_management_information.Windows
                     if (operatingModeToRemove != null)
                     {
                         pagePerent.operatingModes.Remove(operatingModeToRemove);
-                        pagePerent.RefreshOperatingMode();
+                        
                     }
+                    if(addOperatingModes.Contains(operatingMode))
+                        addOperatingModes.Remove(operatingMode);
+                    if(editOperatingModes.Contains(operatingMode))
+                        editOperatingModes.Remove(operatingMode);
+                    pagePerent.RefreshSight();
                 }
                 this.DialogResult = true;
                 this.Close();
@@ -157,7 +163,7 @@ namespace system_management_information.Windows
             this.Close();
         }
 
-        private void SaveTicket(object sender, RoutedEventArgs e)
+        private void SaveOperatingMode(object sender, RoutedEventArgs e)
         {
             TimeOnly? newStartTime = new TimeOnly();
             TimeOnly? newEndTime = new TimeOnly();
@@ -165,10 +171,12 @@ namespace system_management_information.Windows
             string newStatusDay = "";
             if (!((string.IsNullOrEmpty(startTime.Text)
                 || startTime.Text.Trim() == "00:00"
+                || startTime.Text.Trim() == "0:00"
                 || startTime.Text.Trim() == "__:__"
                 || startTime.Text.Trim() == ":")
                 && (string.IsNullOrEmpty(endTime.Text)
                 || endTime.Text.Trim() == "00:00"
+                || startTime.Text.Trim() == "0:00"
                 || endTime.Text.Trim() == "__:__"
                 || endTime.Text.Trim() == ":")))
             {
@@ -188,7 +196,7 @@ namespace system_management_information.Windows
                     return;
                 }
             }
-            if (dayWeek.SelectedItem != null)
+            if (dayWeek.SelectedItem != null && !specialDay)
             {
                 switch (dayWeek.SelectedItem.ToString())
                 {
@@ -246,71 +254,73 @@ namespace system_management_information.Windows
                     return;
                 }
 
-                
-                var specialDayMode = context.SpecialDaySights.Where(s => s.SpecialDayDate == newSpecialDayDate && s.SpecialDayStatus == status.Text).FirstOrDefault();
 
-                if(specialDayMode == null)
+                operatingMode.IdSpecialDaySightNavigation = new SpecialDaySight
                 {
-                    var newSpecialDay = new SpecialDaySight();
-                    newSpecialDay.SpecialDayDate = newSpecialDayDate.Value;
-                    newSpecialDay.SpecialDayStatus = status.Text;
-                    context.SpecialDaySights.Add(newSpecialDay);
-                    context.SaveChanges();
-                    operatingMode.IdSpecialDaySight = newSpecialDay.IdSpecialDaySight;
-                }
-                else
-                {
-                    operatingMode.IdSpecialDaySight = specialDayMode.IdSpecialDaySight;
-                }
+                    SpecialDayDate = date,
+                    SpecialDayStatus = status.Text
+                };
+                operatingMode.IdSpecialDaySight = null;
             }
-            if (newEndTime != null && newStartTime != null)
+            if (newEndTime != new TimeOnly(0, 0) && newStartTime != new TimeOnly(0, 0))
             {
-                var operatingModesSights = context.OperatingModes.Where(o => o.StartTime == newStartTime && o.EndTime == newEndTime).FirstOrDefault();
-                if (operatingModesSights != null)
-                    operatingMode.IdOperatingMode = operatingModesSights.IdOperatingMode;
-                else
+                operatingMode.IdOperatingModeNavigation = new OperatingMode
                 {
-                    OperatingMode operating = new OperatingMode();
-                    operating.StartTime = newStartTime.Value;
-                    operating.EndTime = newEndTime.Value;
-                    context.OperatingModes.Add(operating);
-                    context.SaveChanges();
-                    operatingMode.IdOperatingMode = operating.IdOperatingMode;
-                }
+                    StartTime = newStartTime.Value,
+                    EndTime = newEndTime.Value
+                };
+
+                operatingMode.IdOperatingMode = null;
             }
-            else operatingMode.IdOperatingMode = null;
-            
+            else
+            {
+                operatingMode.IdOperatingModeNavigation = null;
+                operatingMode.IdOperatingMode = null;
+
+            }
+
 
             if (isAdd)
-                addOperatingModes.Add(operatingMode);
-            else
-                editOperatingModes.Add(operatingMode);
-            context.SaveChanges();
-            MessageBox.Show("График Сохранён!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            if (pagePerent != null)
             {
-                if (isAdd)
+                if (!addOperatingModes.Contains(operatingMode))
+                    addOperatingModes.Add(operatingMode);
+                if(pagePerent != null && !pagePerent.operatingModes.Contains(operatingMode))
                     pagePerent.operatingModes.Add(operatingMode);
-                else
+            }
+            else
+            {
+                if (pagePerent != null)
                 {
                     var existingMode = pagePerent.operatingModes.FirstOrDefault(t => t.IdSightOperatingMode == operatingMode.IdSightOperatingMode);
                     if (existingMode != null)
                     {
-                        existingMode.IdOperatingMode = operatingMode.IdOperatingMode;
-                        existingMode.IdSpecialDaySight = operatingMode.IdSpecialDaySight;
-                        existingMode.WorkingDayWeek = operatingMode.WorkingDayWeek;
-                    }
-                }
-                pagePerent.RefreshOperatingMode();
-            }
-            else
-            {
-                MessageBox.Show("Ошибка: ссылка на родительскую страницу потеряна!");
-            }
+                        existingMode.IdOperatingMode = null;
+                        existingMode.IdSpecialDaySight = null;
 
-            this.DialogResult = true;
-            this.Close();
-        }
+                        existingMode.IdOperatingModeNavigation = operatingMode.IdOperatingModeNavigation;
+                        existingMode.IdSpecialDaySightNavigation = operatingMode.IdSpecialDaySightNavigation;
+                        existingMode.WorkingDayWeek = operatingMode.WorkingDayWeek;
+                        if (!editOperatingModes.Contains(operatingMode))
+                        {
+                            editOperatingModes.Add(existingMode);
+                        }
+                    }
+
+                }
+            }
+                MessageBox.Show("График Сохранён!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                if (pagePerent != null)
+                {
+                    pagePerent.RefreshSight();
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка: ссылка на родительскую страницу потеряна!");
+                }
+
+                this.DialogResult = true;
+                this.Close();
+            }
     }
 }

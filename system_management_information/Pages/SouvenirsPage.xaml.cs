@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static system_management_information.Pages.SightsPage;
+using static system_management_information.Pages.SouvenirsPage;
 
 namespace system_management_information.Pages
 {
@@ -43,7 +45,12 @@ namespace system_management_information.Pages
             LoadSouvenirs();
             DataContext = this;
         }
-
+        public void RefreshSouvenirs()
+        {
+            context.ChangeTracker.Clear();
+            ListSouvenirs.ItemsSource = null;
+            LoadSouvenirs();
+        }
         private void LoadSouvenirs()
         {
             souvenirs = context.Souvenirs.ToList();
@@ -60,6 +67,7 @@ namespace system_management_information.Pages
 
         public void ShowSouvenirs()
         {
+            listSouvenirs.Clear();
             foreach(var souvenir in souvenirs)
             {
                 var souvenirShow = new SouvenirShow();
@@ -74,6 +82,8 @@ namespace system_management_information.Pages
                 else souvenirShow.tastes = "Не указан";
                 listSouvenirs.Add(souvenirShow);
             }
+            ListSouvenirs.ItemsSource = null;
+            ListSouvenirs.ItemsSource = listSouvenirs;
         }
 
         private void GoBack(object sender, RoutedEventArgs e)
@@ -83,12 +93,17 @@ namespace system_management_information.Pages
 
         private void ToAddSouvenir(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new AddEditSouvenirPage(null, RefreshSouvenirs));
         }
 
         private void ToEditSouvenir(object sender, SelectionChangedEventArgs e)
         {
-
+            if (ListSouvenirs.SelectedItem != null)
+            {
+                SouvenirShow souvenirShow = ListSouvenirs.SelectedItem as SouvenirShow;
+                ListSouvenirs.SelectedItem = null;
+                NavigationService.Navigate(new AddEditSouvenirPage(souvenirShow.idSouvenir, RefreshSouvenirs));
+            }
         }
 
         private void FoundSouvenir(object sender, TextChangedEventArgs e)

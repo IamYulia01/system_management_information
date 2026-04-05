@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:system_management_information"        
         mc:Ignorable="d"
         Icon="/Media/icon.ico"
-        Title="Приложение администратора базы данных" MinHeight="500" MinWidth="1200">
+        Title="Приложение администратора базы данных" MinHeight="600" MinWidth="1200">
     
     <Grid>
         <Frame Source="Pages/MainPage.xaml"/>

@@ -47,6 +47,16 @@ namespace system_management_information.Pages
             context = new VisitCenterContext();
             this.InvalidateVisual();
             isAdd = true;
+
+            var typesEvent = context.Events.Select(s => s.TypeEvent).ToList();
+            foreach (var type in typesEvent)
+            {
+                if (!typeEvent.Items.Contains(type))
+                    typeEvent.Items.Add(type);
+            }
+            typeEvent.Items.Add("Другое");
+            otherView.Visibility = Visibility.Collapsed;
+
             listTickets = new List<TicketShow>();
             if (idEvent != null )
             {
@@ -63,6 +73,7 @@ namespace system_management_information.Pages
                 titlePage.Text = "Добавление мероприятия";
                 eventEdit = new Event();
                 tickets = new List<Ticket>();
+                btnDelete.Visibility = Visibility.Collapsed;
             }
             DataContext = this;
         }
@@ -91,7 +102,7 @@ namespace system_management_information.Pages
                     ticketEdit.CountPeople = ticket.CountPeople;
                 }
             }
-            typeEvent.Text = eventEdit.TypeEvent;
+            typeEvent.SelectedItem = eventEdit.TypeEvent;
             nameEvent.Text = eventEdit.NameEvent;
             streetEvent.Text = eventEdit.StreetEvent;
             houseEvent.Text = eventEdit.HouseEvent;
@@ -183,26 +194,44 @@ namespace system_management_information.Pages
         {
             if(e.AddedItems.Count > 0)
             {
-                TicketShow ticket = e.AddedItems[0] as TicketShow;
-
+                TicketShow ticketShow = e.AddedItems[0] as TicketShow;
+                var ticket = context.Tickets.Find(ticketShow.idTicket);
                 if (ticket != null)
                 {
-                    AddEditTicket addEditTicket = new AddEditTicket(ticket.idTicket, this);
+                    AddEditTicket addEditTicket = new AddEditTicket(ticket.IdTicket, this);
                     addEditTicket.Owner = Window.GetWindow(this);
                     addEditTicket.ShowDialog();
 
                     ListTickets.SelectedItem = null;
                 }
+                else
+                    MessageBox.Show("Вы не можете редактировать только что добавленный билет! Сначала сохраните данные!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
 
         private void SaveEvent(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(typeEvent.Text))
-                eventEdit.TypeEvent = typeEvent.Text;
+            if (!string.IsNullOrEmpty(typeEvent.SelectedItem.ToString()))
+            {
+                if (typeEvent.SelectedItem.ToString() == "Другое")
+                {
+                    if (!string.IsNullOrEmpty(otherTypeCatering.Text))
+                    {
+                        eventEdit.TypeEvent = otherTypeCatering.Text;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Введите новый тип мероприятия или выберите из списка!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
+                else
+                    eventEdit.TypeEvent = typeEvent.SelectedItem.ToString();
+            }
             else
             {
-                MessageBox.Show("Введите тип мероприятия!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Выберите тип мероприятия!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -288,6 +317,15 @@ namespace system_management_information.Pages
             _onEventSaved?.Invoke();
 
             NavigationService.GoBack();
+        }
+
+        private void SelectionTypeEvent(object sender, SelectionChangedEventArgs e)
+        {
+            if (typeEvent.SelectedItem.ToString() == "Другое")
+            {
+                otherView.Visibility = Visibility.Visible;
+            }
+            else otherView.Visibility = Visibility.Collapsed;
         }
     }
 }

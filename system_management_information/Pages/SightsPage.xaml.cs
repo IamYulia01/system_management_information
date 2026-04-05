@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using system_management_information.Services;
 
 namespace system_management_information.Pages
 {
@@ -33,7 +34,7 @@ namespace system_management_information.Pages
             public string? contactNumber { get; set; }
             public string? email { get; set; }
             public string? urlSight { get; set; }
-            public string photoSight { get; set; }
+            public ImageSource photoSight { get; set; }
             public string? hyperlinkSight { get; set; }
             public string? operationMode { get; set; }
         }
@@ -59,6 +60,7 @@ namespace system_management_information.Pages
         }
         public void LoadSights()
         {
+            
             sights = context.Sights.ToList();
             if(!string.IsNullOrEmpty(foundSigt))
             {
@@ -69,12 +71,15 @@ namespace system_management_information.Pages
                 || s.LocationStreet.ToLower().Contains(foundSigt)
                 || s.LocationHouse != null && s.LocationHouse != null && s.LocationHouse.ToLower().Contains(foundSigt)
                 || s.Email != null && s.Email.ToLower().Contains(foundSigt)
-                || s.SightUrl != null && s.SightUrl.ToLower().Contains(foundSigt)).ToList();
+                || s.SightUrl != null && s.SightUrl.ToLower().Contains(foundSigt))
+                    .ToList();
             }
             ShowSights();
         }
         public void ShowSights()
         {
+            listSights.Clear();
+            var mediaService = MediaService.Instance;
             foreach (var sight in sights)
             {
                 var sightShow = new SightShow();
@@ -113,7 +118,7 @@ namespace system_management_information.Pages
                     string specialDays = "";
                     if ((modeOperations.Last().WorkingDayWeek == null || modeOperations.Last().WorkingDayWeek > 7 || modeOperations.Last().WorkingDayWeek <= 0) && modeOperations.Last().IdSpecialDaySight == null)
                         sightShow.operationMode += $" {modeOperations.Last().IdOperatingModeNavigation.StartTime.ToShortTimeString()} " +
-                            $"- {modeOperations.Last().IdOperatingModeNavigation.EndTime.ToShortTimeString()}";
+                            $"- {modeOperations.Last().IdOperatingModeNavigation.EndTime.ToShortTimeString()}\n";
                     else
                     {
                         //группировка дней недели с одинаковым графиком работы
@@ -146,15 +151,25 @@ namespace system_management_information.Pages
                             string[] week = { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" };
                             var first = modeOperation.First();
                             if (count == 1)
-                                sightShow.operationMode += $"    {week[(int)first.WorkingDayWeek - 1]}: " +
-                                    $"{first.IdOperatingModeNavigation.StartTime.ToShortTimeString()}" +
-                                    $" - {first.IdOperatingModeNavigation.EndTime.ToShortTimeString()} \n";
+                            {
+                                if (first.IdOperatingModeNavigation != null)
+                                {
+                                    sightShow.operationMode += $"    {week[(int)first.WorkingDayWeek - 1]}: " +
+                                        $"{first.IdOperatingModeNavigation.StartTime.ToShortTimeString()}" +
+                                        $" - {first.IdOperatingModeNavigation.EndTime.ToShortTimeString()} \n";
+                                }
+                                else sightShow.operationMode += $"    {week[(int)first.WorkingDayWeek - 1]}: Целый день\n";
+                            }
                             else if (count > 1)
                             {
                                 var last = modeOperation.Last();
-                                sightShow.operationMode += $"    {week[(int)first.WorkingDayWeek - 1]}-{week[(int)last.WorkingDayWeek - 1]}: " +
+                                if (last.IdOperatingModeNavigation != null)
+                                {
+                                    sightShow.operationMode += $"    {week[(int)first.WorkingDayWeek - 1]}-{week[(int)last.WorkingDayWeek - 1]}: " +
                                     $"{first.IdOperatingModeNavigation.StartTime.ToShortTimeString()}" +
                                     $" - {first.IdOperatingModeNavigation.EndTime.ToShortTimeString()} \n";
+                                }
+                                else sightShow.operationMode += $"    {week[(int)first.WorkingDayWeek - 1]}-{week[(int)last.WorkingDayWeek - 1]}: Целый день\n";
                             }
                         }
                     }
@@ -184,12 +199,14 @@ namespace system_management_information.Pages
                     }
                 }
                 var photoSight = context.PhotoSights.Where(p => p.IdSight == sight.IdSight).FirstOrDefault();
-                if (photoSight != null)
-                    sightShow.photoSight = $"/Media/{photoSight.LinkPhoto.Trim()}";
-                else sightShow.photoSight = "/Media/pictureSight.jpg";
+                if (photoSight != null && !string.IsNullOrEmpty(photoSight.LinkPhoto))
+                    sightShow.photoSight = mediaService.GetImage(photoSight.LinkPhoto.Trim());
+                else
+                    sightShow.photoSight = mediaService.GetImage("pictureSight.jpg");
                 listSights.Add(sightShow);
             }
-            ListSights.ItemsSource = listSights;
+            ListSights.ItemsSource = null;
+            ListSights.ItemsSource = listSights.OrderBy(s => s.idSight);
         }
         private void GoBack(object sender, RoutedEventArgs e)
         {
@@ -209,6 +226,7 @@ namespace system_management_information.Pages
             if (ListSights.SelectedItem != null)
             {
                 SightShow sightShow = ListSights.SelectedItem as SightShow;
+                ListSights.SelectedItem = null;
                 NavigationService.Navigate(new AddEditSightPage(sightShow.idSight, RefreshSights));
             }
         }

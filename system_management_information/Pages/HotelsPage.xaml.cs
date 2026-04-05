@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using system_management_information.Services;
+using static system_management_information.Pages.EventsPage;
 using static system_management_information.Pages.SightsPage;
 
 namespace system_management_information.Pages
@@ -30,7 +32,7 @@ namespace system_management_information.Pages
             public string? hotelUrl { get; set; }
             public string? hyperlinkHotel { get; set; }
             public string? typeHotel { get; set; }
-            public string photoHotel { get; set; }
+            public ImageSource photoHotel { get; set; }
 
         }
         public VisitCenterContext context {  get; set; }
@@ -47,6 +49,14 @@ namespace system_management_information.Pages
             LoadHotels();
             DataContext = this;
         }
+
+        public void RefreshHotel()
+        {
+            context.ChangeTracker.Clear();
+            ListHotels.ItemsSource = null;
+            LoadHotels();
+        }
+
         public void LoadHotels()
         {
             hotels = context.Hotels.ToList();
@@ -64,7 +74,9 @@ namespace system_management_information.Pages
 
         private void ShowHotels()
         {
-            foreach(var hotel in hotels)
+            listHotels.Clear();
+            var mediaService = MediaService.Instance;
+            foreach (var hotel in hotels)
             {
                 var hotelShow = new HotelShow();
                 hotelShow.idHotel = hotel.IdHotel;
@@ -86,12 +98,15 @@ namespace system_management_information.Pages
                 hotelShow.addressHotel = $"ул. {hotel.HotelStreet}, д. {hotel.HotelHouse}";
 
                 var photo = context.PhotoHotels.Where(p => p.IdHotel == hotel.IdHotel).FirstOrDefault();
-                if (photo != null)
-                    hotelShow.photoHotel = $"/Media/{photo.NameFile.Trim()}";
-                else hotelShow.photoHotel = "/Media/pictureSight.jpg";
-                
+                if (photo != null && !string.IsNullOrEmpty(photo.NameFile))
+                    hotelShow.photoHotel = mediaService.GetImage(photo.NameFile.Trim());
+                else
+                    hotelShow.photoHotel = mediaService.GetImage("pictureSight.jpg");
+
                 listHotels.Add(hotelShow);
             }
+            ListHotels.ItemsSource = null;
+            ListHotels.ItemsSource = listHotels.OrderBy(h => h.idHotel);
         }
 
         private void GoBack(object sender, RoutedEventArgs e)
@@ -126,12 +141,17 @@ namespace system_management_information.Pages
 
         private void ToEditHotel(object sender, SelectionChangedEventArgs e)
         {
-
+            if (ListHotels.SelectedItem != null)
+            {
+                HotelShow hotelShow = ListHotels.SelectedItem as HotelShow;
+                ListHotels.SelectedItem = null;
+                NavigationService.Navigate(new AddEditHotelPage(hotelShow.idHotel, RefreshHotel));
+            }
         }
 
         private void ToAddHotel(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new AddEditHotelPage(null, RefreshHotel));
         }
     }
 }

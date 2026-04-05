@@ -22,7 +22,17 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"  Style="{StaticResource NameDescription}" VerticalAlignment="Center" Text="Тип мероприятия:  "/>
                 <Border Grid.Column="1" CornerRadius="10" Background="#95a5a6" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderThickness="1">
-                    <TextBox x:Name="typeEvent" MaxLength="100" Foreground="White" Background="#95a5a6" BorderBrush="#95a5a6" Margin="5" BorderThickness="0" FontSize="16" FontFamily="Times New Roman"/>
+                    <ComboBox x:Name="typeEvent" Foreground="Black" Background="#95a5a6" BorderBrush="#95a5a6" Margin="5" BorderThickness="0" FontSize="16" FontFamily="Times New Roman" SelectionChanged="SelectionTypeEvent"/>
+                </Border>
+            </Grid>
+            <Grid x:Name="otherView" Margin="10" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"  Style="{StaticResource NameDescription}" VerticalAlignment="Center" Text="Другое:  "/>
+                <Border Grid.Column="1" CornerRadius="10" Background="#95a5a6" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderThickness="1">
+                    <TextBox x:Name="otherTypeCatering" MaxLength="100" Foreground="White" Background="#95a5a6" BorderBrush="#95a5a6" Margin="5" BorderThickness="0" FontSize="16" FontFamily="Times New Roman"/>
                 </Border>
             </Grid>
             <Grid Margin="10">
@@ -82,8 +92,8 @@
                 </Border>
             </Grid>
         </StackPanel>
-        <TextBlock Style="{StaticResource NameDescription}" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Билеты" Margin="0,290,0,0" FontSize="20"/>
-        <Border Background="#95a5a6" Margin="50,315,50,60" CornerRadius="15">
+        <TextBlock Style="{StaticResource NameDescription}" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Билеты" Margin="0,340,0,0" FontSize="20"/>
+        <Border Background="#95a5a6" Margin="50,365,50,60" CornerRadius="15">
             <Grid>
                 <ListBox x:Name="ListTickets" ItemsSource="{Binding listTickets}" Margin="5,5,5,60" Background="#95a5a6" BorderBrush="#95a5a6" SelectionChanged="EditTicket">
                 <ListBox.Resources>

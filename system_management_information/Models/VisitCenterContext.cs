@@ -83,8 +83,7 @@ public partial class VisitCenterContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("establishment_name");
             entity.Property(e => e.EstablishmentPhone)
-                .HasMaxLength(11)
-                .IsFixedLength()
+                .HasMaxLength(15)
                 .HasColumnName("establishment_phone");
             entity.Property(e => e.EstablishmentStreet)
                 .HasMaxLength(50)
@@ -208,8 +207,7 @@ public partial class VisitCenterContext : DbContext
 
             entity.Property(e => e.IdHotel).HasColumnName("id_hotel");
             entity.Property(e => e.ContactNumberHotel)
-                .HasMaxLength(11)
-                .IsFixedLength()
+                .HasMaxLength(15)
                 .HasColumnName("contact_number_hotel");
             entity.Property(e => e.HotelHouse)
                 .HasMaxLength(10)
@@ -386,8 +384,7 @@ public partial class VisitCenterContext : DbContext
 
             entity.Property(e => e.IdSight).HasColumnName("id_sight");
             entity.Property(e => e.ContactNumber)
-                .HasMaxLength(11)
-                .IsFixedLength()
+                .HasMaxLength(15)
                 .HasColumnName("contact_number");
             entity.Property(e => e.Description)
                 .HasMaxLength(900)
