@@ -19,6 +19,7 @@ namespace system_management_information
         public MainWindow()
         {
             InitializeComponent();
+            
         }
     }
 }

@@ -68,6 +68,8 @@ namespace system_management_information.Pages
             editOperatingModes.Clear();
             deleteOperatingModes.Clear();
             addOperatingModes.Clear();
+            addPhotoSight.Clear();
+            deletePhotosSight.Clear();
 
             var typesSight = context.Sights.Select(s => s.TypeSight).ToList();
             foreach (var type in typesSight)
@@ -390,6 +392,8 @@ namespace system_management_information.Pages
 
         private void SaveSight(object sender, RoutedEventArgs e)
         {
+            var mediaService = MediaService.Instance;
+
             if (!string.IsNullOrEmpty(typeSight.SelectedItem.ToString()))
             {
                 if (typeSight.SelectedItem.ToString() == "Другое")
@@ -578,6 +582,33 @@ namespace system_management_information.Pages
                 }
             }
 
+            foreach (var add in addPhotoSight)
+            {
+                if (deletePhotosSight.Contains(add))
+                {
+                    addPhotoSight.Remove(add);
+                    deletePhotosSight.Remove(add);
+                }
+                else
+                {
+                    var photo = new PhotoSight();
+                    photo.LinkPhoto = mediaService.CopyFileToMedia(add.filePhoto.FullName);
+                    if (!string.IsNullOrEmpty(add.shortDescription))
+                        photo.ShortDescription = add.shortDescription;
+
+                    photo.IdSightNavigation = sight;
+                    context.PhotoSights.Add(photo);
+                }
+            }
+            foreach (var del in deletePhotosSight)
+            {
+                var photo = context.PhotoSights.Find(del.idPhoto);
+                if (photo != null)
+                {
+                    mediaService.DeleteFileFromMedia(photo.LinkPhoto);
+                    context.PhotoSights.Remove(photo);
+                }
+            }
             context.SaveChanges();
 
             addOperatingModes.Clear();
