@@ -1,1 +1,0 @@
-Host=localhost;Port=5432;Database=VisitCenter;Username=postgres;Password=kasko
