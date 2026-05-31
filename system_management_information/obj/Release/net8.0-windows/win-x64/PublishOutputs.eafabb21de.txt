@@ -1,2 +1,0 @@
-C:\Users\malov\Desktop\BOT\publish\appsettings.json
-C:\Users\malov\Desktop\BOT\publish\system_management_information.exe
